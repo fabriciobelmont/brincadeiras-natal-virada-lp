@@ -29,7 +29,8 @@ export default {
     titulo: 'Veja as páginas por dentro',
     subtitulo: null,
     estilo: 'carrossel',
-    autoplay: false,
+    autoplay: true,
+    intervalo: 1600, // pedido do usuário: troca a cada 1,6 s
     slides: [
       { img: 'por-dentro-1', legenda: 'Tudo o que vem no guia, em uma página.', alt: 'Página do sumário do guia' },
       { img: 'por-dentro-2', legenda: 'Cada brincadeira mostra idade, tempo, quantas pessoas e o material de casa.', alt: 'Página das brincadeiras Copo da Sorte e Bolinha na Colher' },

@@ -105,9 +105,9 @@ const listaNao = (itens) => itens?.length ? `<ul class="checks nao">${itens.map(
 const secao = (id, cls, inner) => `<section ${id ? `id="${id}" ` : ''}class="sec ${cls}">\n<div class="wrap">${inner}</div>\n</section>`;
 const titulo = (t, sub) => `<h2 class="revelar">${rico(t)}</h2>${sub ? `<p class="sub-secao">${rico(sub)}</p>` : ''}`;
 
-function carrossel(id, rotulo, slides, autoplay = false) {
+function carrossel(id, rotulo, slides, autoplay = false, intervalo = 3500) {
   const itens = slides.map((s) => `<figure class="slide">${img(s.img, s.alt || s.legenda, { sizes: '(max-width: 768px) 85vw, 360px' })}${s.legenda ? `<figcaption>${esc(s.legenda)}</figcaption>` : ''}</figure>`).join('');
-  return `<div class="carrossel" id="${id}" role="region" aria-label="${esc(rotulo)}" data-autoplay="${autoplay ? 'sim' : 'nao'}">
+  return `<div class="carrossel" id="${id}" role="region" aria-label="${esc(rotulo)}" data-autoplay="${autoplay ? 'sim' : 'nao'}" data-intervalo="${Number(intervalo) || 3500}">
 <div class="trilho" tabindex="0">${itens}</div>
 <div class="car-ctrl"><button class="car-seta" data-dir="-1" aria-label="Anterior">${icone('seta', 'ico gira')}</button><span class="car-cont" aria-live="polite">1/${slides.length}</span>${autoplay ? '<button class="car-pausa" aria-label="Pausar">Pausar</button>' : ''}<button class="car-seta" data-dir="1" aria-label="Próximo">${icone('seta')}</button></div>
 </div>`;
@@ -141,7 +141,7 @@ R.dor = () => c.dor?.itens?.length ? secao('', 'dor', `${titulo(c.dor.titulo)}<d
 R.porDentro = () => {
   const p = c.porDentro;
   if (!p?.slides?.length) return '';
-  const corpo = p.estilo === 'vitrine' ? vitrine(p.titulo, p.slides) : carrossel('car-por-dentro', p.titulo, p.slides, p.autoplay);
+  const corpo = p.estilo === 'vitrine' ? vitrine(p.titulo, p.slides) : carrossel('car-por-dentro', p.titulo, p.slides, p.autoplay, p.intervalo);
   return secao('veja-por-dentro', `por-dentro ${p.estilo === 'vitrine' ? 'escuro largura-total' : 'alt'}`, `${titulo(p.titulo, p.subtitulo)}${corpo}`);
 };
 R.demo = () => c.demo?.img ? secao('', 'demo', `${c.demo.titulo ? titulo(c.demo.titulo) : ''}${c.demo.texto ? `<p class="demo-txt">${rico(c.demo.texto)}</p>` : ''}<div class="demo-img revelar">${img(c.demo.img, c.demo.alt || '', { sizes: '(max-width: 768px) 92vw, 720px' })}</div>`) : '';

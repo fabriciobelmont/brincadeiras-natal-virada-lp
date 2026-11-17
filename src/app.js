@@ -81,7 +81,7 @@
     trilho.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') ir(1); if (e.key === 'ArrowLeft') ir(-1); });
     if (car.getAttribute('data-autoplay') !== 'sim' || reduzir) { var bp = car.querySelector('.car-pausa'); if (bp) bp.hidden = true; return; }
     var timer = null, pausado = false, visivel = false, btn = car.querySelector('.car-pausa');
-    function tocar() { if (!timer && !pausado && visivel && !document.hidden) timer = setInterval(function () { ir(1); }, 3500); }
+    function tocar() { if (!timer && !pausado && visivel && !document.hidden) timer = setInterval(function () { ir(1); }, Number(car.getAttribute('data-intervalo')) || 3500); }
     function parar() { clearInterval(timer); timer = null; }
     if (btn) btn.addEventListener('click', function () { pausado = !pausado; btn.textContent = pausado ? 'Retomar' : 'Pausar'; btn.setAttribute('aria-label', btn.textContent); pausado ? parar() : tocar(); });
     ['pointerdown', 'mouseenter', 'focusin', 'touchstart'].forEach(function (ev) { car.addEventListener(ev, parar, { passive: true }); });
