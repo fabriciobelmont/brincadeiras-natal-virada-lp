@@ -1,0 +1,10 @@
+{
+  "name": "landing-low-ticket",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs --producao",
+    "previa": "node build.mjs"
+  },
+  "engines": { "node": ">=18" }
+}
