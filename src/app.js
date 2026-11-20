@@ -132,4 +132,52 @@
     }
     atualiza();
   });
+
+  // 7. Pop-up de saída: só com sinal claro de que a pessoa vai sair (pedido do usuário, 20/11/2026)
+  (function () {
+    var modal = document.getElementById('saida');
+    if (!modal) return;
+    var CHAVE = 'saida_vista', inicio = Date.now(), maxRolagem = 0, ultimoY = window.scrollY, ultimoT = inicio, subida = 0, ativo = true;
+    function jaVisto() { try { return sessionStorage.getItem(CHAVE) === '1'; } catch (e) { return false; } }
+    function marca() { try { sessionStorage.setItem(CHAVE, '1'); } catch (e) {} }
+    function engajado() {
+      if (window.scrollY > maxRolagem) maxRolagem = window.scrollY;
+      var alturaUtil = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      return Date.now() - inicio >= 12000 && maxRolagem / alturaUtil >= 0.25;
+    }
+    var focoAntes = null;
+    function abrir() {
+      if (!ativo || jaVisto() || !engajado()) return;
+      ativo = false; marca();
+      focoAntes = document.activeElement;
+      modal.hidden = false; document.documentElement.classList.add('saida-aberta');
+      var btn = modal.querySelector('.btn'); if (btn) btn.focus();
+      clarityEvento('exit_popup_shown');
+    }
+    function fechar() {
+      modal.hidden = true; document.documentElement.classList.remove('saida-aberta');
+      if (focoAntes && focoAntes.focus) focoAntes.focus();
+    }
+    modal.querySelectorAll('[data-saida-fechar]').forEach(function (el) { el.addEventListener('click', fechar); });
+    document.addEventListener('keydown', function (e) { if (!modal.hidden && e.key === 'Escape') fechar(); });
+    // Quem já foi para o checkout não vê o pop-up
+    document.querySelectorAll('[data-cta="checkout"]').forEach(function (a) { a.addEventListener('click', function () { if (a.getAttribute('data-local') !== 'exit-popup') { ativo = false; marca(); } }); });
+    window.addEventListener('scroll', function () {
+      var y = window.scrollY, t = Date.now();
+      if (y > maxRolagem) maxRolagem = y;
+      var dy = ultimoY - y, dt = Math.max(1, t - ultimoT);
+      // Celular: subida rápida e contínua depois de já ter descido bastante (gesto de quem volta ao topo para sair)
+      if (dy > 0 && dy / dt > 1.2) subida += dy; else if (dy <= 0) subida = 0;
+      if (coarse && subida > window.innerHeight * 0.9 && maxRolagem > window.innerHeight * 2) { subida = 0; abrir(); }
+      ultimoY = y; ultimoT = t;
+    }, { passive: true });
+    var coarse = window.matchMedia('(pointer: coarse)').matches;
+    // Computador: o mouse sai da página pelo topo (em direção às abas, à barra de endereço ou ao X)
+    if (!coarse) {
+      document.addEventListener('mouseout', function (e) {
+        if (e.relatedTarget || e.toElement) return;
+        if (e.clientY <= 8) abrir();
+      });
+    }
+  })();
 })();

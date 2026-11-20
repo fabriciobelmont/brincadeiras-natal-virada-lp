@@ -153,7 +153,15 @@ export default {
   },
   ctaFinal: { frase: 'Neste Natal e nesta virada, a família inteira na mesma brincadeira, e os celulares na cesta.', botao: 'Quero a noite de Natal pronta' },
   rodape: {
-    nome: 'Brincadeiras da Lu, um produto Kyber Labs', ano: 2026, suporte: 'kyber97ai@gmail.com', termosUrl: 'termos.html', privacidadeUrl: 'privacidade.html',
+    oculto: true, // pedido do usuário em 20/11/2026: sem informações no rodapé
+    nome: 'Brincadeiras da Lu, um produto Kyber Labs', ano: 2026, suporte: null, termosUrl: null, privacidadeUrl: null,
     avisoDireitos: null,
+  },
+  saida: {
+    titulo: 'Antes de sair: a sua noite de Natal *já pode ficar pronta*',
+    texto: 'O roteiro da noite, as 40 brincadeiras e o leilão com as notas para imprimir chegam no seu e-mail logo depois do pagamento. Você tem 7 dias de garantia.',
+    preco: 'R$ 37,99, pagamento único',
+    botao: 'Quero a noite de Natal pronta',
+    fechar: 'Agora não',
   },
 };

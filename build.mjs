@@ -198,10 +198,16 @@ ${blocoPreco({ preco: com.preco, anterior: com.precoAnteriorReal, parcelas: com.
 R.garantia = () => secao('', 'garantia', `<div class="garantia-box"><div class="medalha" aria-hidden="true"><div class="medalha-in"><strong>${com.garantiaDias ?? '?'}</strong><span>DIAS</span></div></div><div><h2>${rico(c.garantia.titulo)}</h2><p>${esc(c.garantia.texto)}</p></div></div>`);
 R.faq = () => secao('', 'faq', `${titulo(c.faq.titulo)}<div class="faq-lista">${c.faq.perguntas.map((f) => `<details><summary>${esc(f.p)}</summary><p>${esc(f.r)}</p></details>`).join('')}</div>`);
 R.ctaFinal = () => secao('', 'cta-final escuro', `<p class="cta-frase">${rico(c.ctaFinal.frase)}</p><div class="cta-wrap">${planos ? btnRolagem(c.ctaFinal.botao).replace('#o-que-voce-recebe', '#oferta').replace('data-cta="rolagem"', 'data-cta="rolagem" data-alvo="oferta"') : btnCheckout(c.ctaFinal.botao, 'cta-final')}</div>`);
+R.saida = () => {
+  const s = c.saida;
+  if (!s) return '';
+  return `<div class="saida" id="saida" role="dialog" aria-modal="true" aria-labelledby="saida-titulo" hidden><div class="saida-fundo" data-saida-fechar></div><div class="saida-caixa"><button type="button" class="saida-x" data-saida-fechar aria-label="Fechar">&times;</button><h2 id="saida-titulo">${rico(s.titulo)}</h2><p>${esc(s.texto)}</p><p class="saida-preco">${esc(s.preco || '')}</p><div class="saida-cta">${btnCheckout(s.botao, 'exit-popup')}</div><button type="button" class="saida-nao" data-saida-fechar>${esc(s.fechar || 'Agora não')}</button></div></div>`;
+};
 R.rodape = () => {
   const rd = c.rodape;
+  if (rd && rd.oculto) return R.saida();
   const links = [rd.termosUrl && `<a href="${esc(rd.termosUrl)}">Termos de uso</a>`, rd.privacidadeUrl && `<a href="${esc(rd.privacidadeUrl)}">Política de privacidade</a>`].filter(Boolean).join(' · ');
-  return `<footer class="rodape"><div class="wrap"><p>${esc(rd.nome)} · Copyright © ${rd.ano || new Date().getFullYear()} · Todos os direitos reservados.</p><p>Este site não é afiliado à Meta (Facebook e Instagram) nem ao Google.</p>${rd.avisoDireitos ? `<p class="aviso-direitos">${esc(rd.avisoDireitos)}</p>` : ''}${links ? `<p>${links}</p>` : ''}${rd.suporte ? `<p>Suporte: ${esc(rd.suporte)}</p>` : ''}</div></footer>`;
+  return `<footer class="rodape"><div class="wrap"><p>${esc(rd.nome)} · Copyright © ${rd.ano || new Date().getFullYear()} · Todos os direitos reservados.</p><p>Este site não é afiliado à Meta (Facebook e Instagram) nem ao Google.</p>${rd.avisoDireitos ? `<p class="aviso-direitos">${esc(rd.avisoDireitos)}</p>` : ''}${links ? `<p>${links}</p>` : ''}${rd.suporte ? `<p>Suporte: ${esc(rd.suporte)}</p>` : ''}</div></footer>` + R.saida();
 };
 
 // ---------- ordem das seções ----------
