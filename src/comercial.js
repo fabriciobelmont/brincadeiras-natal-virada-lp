@@ -8,6 +8,6 @@ export default {
   parcelamentoTexto: null, // conferir no checkout da Cakto antes de exibir
   garantiaDias: 7,
   formasPagamento: ['Pix', 'Cartão de crédito'],
-  checkoutUrl: null,       // etapa 9 (Cakto)
+  checkoutUrl: 'https://pay.cakto.com.br/uwvawdt_1351597', // Cakto, criado em 20/11/2026
   planos: null,
 };
