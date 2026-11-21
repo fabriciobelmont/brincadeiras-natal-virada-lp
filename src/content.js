@@ -3,8 +3,8 @@ export default {
   meta: {
     titulo: 'Brincadeiras de Natal e da Virada em Família',
     descricao: 'Guia digital para imprimir com o roteiro da noite, 30 brincadeiras de Natal e 10 da Virada, leilão, bingo e quiz prontos. Com o que você tem em casa.',
-    ogImage: null, // URL absoluta de img/og-image.jpg entra na integração final, com o domínio
-    urlCanonica: null,
+    ogImage: 'https://brincadeiras-natal-virada-lp.vercel.app/img/og-image.jpg',
+    urlCanonica: 'https://brincadeiras-natal-virada-lp.vercel.app/',
     mockupEstilizado: false,
   },
   prazoReal: null,
