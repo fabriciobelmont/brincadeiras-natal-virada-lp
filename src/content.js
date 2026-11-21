@@ -3,8 +3,8 @@ export default {
   meta: {
     titulo: 'Brincadeiras de Natal e da Virada em Família',
     descricao: 'Guia digital para imprimir com o roteiro da noite, 30 brincadeiras de Natal e 10 da Virada, leilão, bingo e quiz prontos. Com o que você tem em casa.',
-    ogImage: null, // URL absoluta de img/og-image.jpg entra na integração final, com o domínio
-    urlCanonica: null,
+    ogImage: 'https://brincadeiras-natal-virada-lp.vercel.app/img/og-image.jpg',
+    urlCanonica: 'https://brincadeiras-natal-virada-lp.vercel.app/',
     mockupEstilizado: false,
   },
   prazoReal: null,
@@ -29,7 +29,8 @@ export default {
     titulo: 'Veja as páginas por dentro',
     subtitulo: null,
     estilo: 'carrossel',
-    autoplay: false,
+    autoplay: true,
+    intervalo: 1600, // pedido do usuário: troca a cada 1,6 s
     slides: [
       { img: 'por-dentro-1', legenda: 'Tudo o que vem no guia, em uma página.', alt: 'Página do sumário do guia' },
       { img: 'por-dentro-2', legenda: 'Cada brincadeira mostra idade, tempo, quantas pessoas e o material de casa.', alt: 'Página das brincadeiras Copo da Sorte e Bolinha na Colher' },
@@ -152,7 +153,15 @@ export default {
   },
   ctaFinal: { frase: 'Neste Natal e nesta virada, a família inteira na mesma brincadeira, e os celulares na cesta.', botao: 'Quero a noite de Natal pronta' },
   rodape: {
-    nome: 'Brincadeiras da Lu, um produto Kyber Labs', ano: 2026, suporte: 'kyber97ai@gmail.com', termosUrl: 'termos.html', privacidadeUrl: 'privacidade.html',
+    oculto: true, // pedido do usuário em 20/11/2026: sem informações no rodapé
+    nome: 'Brincadeiras da Lu, um produto Kyber Labs', ano: 2026, suporte: null, termosUrl: null, privacidadeUrl: null,
     avisoDireitos: null,
+  },
+  saida: {
+    titulo: 'Antes de sair: a sua noite de Natal *já pode ficar pronta*',
+    texto: 'O roteiro da noite, as 40 brincadeiras e o leilão com as notas para imprimir chegam no seu e-mail logo depois do pagamento. Você tem 7 dias de garantia.',
+    preco: 'R$ 37,99, pagamento único',
+    botao: 'Quero a noite de Natal pronta',
+    fechar: 'Agora não',
   },
 };

@@ -105,9 +105,9 @@ const listaNao = (itens) => itens?.length ? `<ul class="checks nao">${itens.map(
 const secao = (id, cls, inner) => `<section ${id ? `id="${id}" ` : ''}class="sec ${cls}">\n<div class="wrap">${inner}</div>\n</section>`;
 const titulo = (t, sub) => `<h2 class="revelar">${rico(t)}</h2>${sub ? `<p class="sub-secao">${rico(sub)}</p>` : ''}`;
 
-function carrossel(id, rotulo, slides, autoplay = false) {
+function carrossel(id, rotulo, slides, autoplay = false, intervalo = 3500) {
   const itens = slides.map((s) => `<figure class="slide">${img(s.img, s.alt || s.legenda, { sizes: '(max-width: 768px) 85vw, 360px' })}${s.legenda ? `<figcaption>${esc(s.legenda)}</figcaption>` : ''}</figure>`).join('');
-  return `<div class="carrossel" id="${id}" role="region" aria-label="${esc(rotulo)}" data-autoplay="${autoplay ? 'sim' : 'nao'}">
+  return `<div class="carrossel" id="${id}" role="region" aria-label="${esc(rotulo)}" data-autoplay="${autoplay ? 'sim' : 'nao'}" data-intervalo="${Number(intervalo) || 3500}">
 <div class="trilho" tabindex="0">${itens}</div>
 <div class="car-ctrl"><button class="car-seta" data-dir="-1" aria-label="Anterior">${icone('seta', 'ico gira')}</button><span class="car-cont" aria-live="polite">1/${slides.length}</span>${autoplay ? '<button class="car-pausa" aria-label="Pausar">Pausar</button>' : ''}<button class="car-seta" data-dir="1" aria-label="Próximo">${icone('seta')}</button></div>
 </div>`;
@@ -141,7 +141,7 @@ R.dor = () => c.dor?.itens?.length ? secao('', 'dor', `${titulo(c.dor.titulo)}<d
 R.porDentro = () => {
   const p = c.porDentro;
   if (!p?.slides?.length) return '';
-  const corpo = p.estilo === 'vitrine' ? vitrine(p.titulo, p.slides) : carrossel('car-por-dentro', p.titulo, p.slides, p.autoplay);
+  const corpo = p.estilo === 'vitrine' ? vitrine(p.titulo, p.slides) : carrossel('car-por-dentro', p.titulo, p.slides, p.autoplay, p.intervalo);
   return secao('veja-por-dentro', `por-dentro ${p.estilo === 'vitrine' ? 'escuro largura-total' : 'alt'}`, `${titulo(p.titulo, p.subtitulo)}${corpo}`);
 };
 R.demo = () => c.demo?.img ? secao('', 'demo', `${c.demo.titulo ? titulo(c.demo.titulo) : ''}${c.demo.texto ? `<p class="demo-txt">${rico(c.demo.texto)}</p>` : ''}<div class="demo-img revelar">${img(c.demo.img, c.demo.alt || '', { sizes: '(max-width: 768px) 92vw, 720px' })}</div>`) : '';
@@ -198,10 +198,16 @@ ${blocoPreco({ preco: com.preco, anterior: com.precoAnteriorReal, parcelas: com.
 R.garantia = () => secao('', 'garantia', `<div class="garantia-box"><div class="medalha" aria-hidden="true"><div class="medalha-in"><strong>${com.garantiaDias ?? '?'}</strong><span>DIAS</span></div></div><div><h2>${rico(c.garantia.titulo)}</h2><p>${esc(c.garantia.texto)}</p></div></div>`);
 R.faq = () => secao('', 'faq', `${titulo(c.faq.titulo)}<div class="faq-lista">${c.faq.perguntas.map((f) => `<details><summary>${esc(f.p)}</summary><p>${esc(f.r)}</p></details>`).join('')}</div>`);
 R.ctaFinal = () => secao('', 'cta-final escuro', `<p class="cta-frase">${rico(c.ctaFinal.frase)}</p><div class="cta-wrap">${planos ? btnRolagem(c.ctaFinal.botao).replace('#o-que-voce-recebe', '#oferta').replace('data-cta="rolagem"', 'data-cta="rolagem" data-alvo="oferta"') : btnCheckout(c.ctaFinal.botao, 'cta-final')}</div>`);
+R.saida = () => {
+  const s = c.saida;
+  if (!s) return '';
+  return `<div class="saida" id="saida" role="dialog" aria-modal="true" aria-labelledby="saida-titulo" hidden><div class="saida-fundo" data-saida-fechar></div><div class="saida-caixa"><button type="button" class="saida-x" data-saida-fechar aria-label="Fechar">&times;</button><h2 id="saida-titulo">${rico(s.titulo)}</h2><p>${esc(s.texto)}</p><p class="saida-preco">${esc(s.preco || '')}</p><div class="saida-cta">${btnCheckout(s.botao, 'exit-popup')}</div><button type="button" class="saida-nao" data-saida-fechar>${esc(s.fechar || 'Agora não')}</button></div></div>`;
+};
 R.rodape = () => {
   const rd = c.rodape;
+  if (rd && rd.oculto) return R.saida();
   const links = [rd.termosUrl && `<a href="${esc(rd.termosUrl)}">Termos de uso</a>`, rd.privacidadeUrl && `<a href="${esc(rd.privacidadeUrl)}">Política de privacidade</a>`].filter(Boolean).join(' · ');
-  return `<footer class="rodape"><div class="wrap"><p>${esc(rd.nome)} · Copyright © ${rd.ano || new Date().getFullYear()} · Todos os direitos reservados.</p><p>Este site não é afiliado à Meta (Facebook e Instagram) nem ao Google.</p>${rd.avisoDireitos ? `<p class="aviso-direitos">${esc(rd.avisoDireitos)}</p>` : ''}${links ? `<p>${links}</p>` : ''}${rd.suporte ? `<p>Suporte: ${esc(rd.suporte)}</p>` : ''}</div></footer>`;
+  return `<footer class="rodape"><div class="wrap"><p>${esc(rd.nome)} · Copyright © ${rd.ano || new Date().getFullYear()} · Todos os direitos reservados.</p><p>Este site não é afiliado à Meta (Facebook e Instagram) nem ao Google.</p>${rd.avisoDireitos ? `<p class="aviso-direitos">${esc(rd.avisoDireitos)}</p>` : ''}${links ? `<p>${links}</p>` : ''}${rd.suporte ? `<p>Suporte: ${esc(rd.suporte)}</p>` : ''}</div></footer>` + R.saida();
 };
 
 // ---------- ordem das seções ----------
